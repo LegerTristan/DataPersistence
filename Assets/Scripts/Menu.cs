@@ -21,6 +21,8 @@ public class Menu : MonoBehaviour
     [SerializeField]
     Button btnQuit = null;
 
+    Player player = null;
+
     bool IsMenuValid => txtBestScore && inputFieldName && btnStart && btnQuit;
 
 
@@ -33,6 +35,16 @@ public class Menu : MonoBehaviour
         btnStart.onClick.AddListener(LoadLevel);
         btnQuit.onClick.AddListener(() => Application.Quit());
         UpdatePlayerName(DEFAULT_NAME);
+        UpdateScore();
+    }
+
+    private void UpdateScore()
+    {
+        player = Player.Instance;
+        if (player)
+        {
+            txtBestScore.text = $"Best Score : {player.GetBestScore()}";
+        }
     }
 
     void LoadLevel()
@@ -42,8 +54,8 @@ public class Menu : MonoBehaviour
 
     void UpdatePlayerName(string _value)
     {
-        Player _instance = Player.Instance;
-        if (_instance)
-            _instance.Name = _value;
+        player = Player.Instance;
+        if (player)
+            player.Name = _value;
     }
 }

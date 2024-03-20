@@ -13,7 +13,9 @@ public class MainManager : MonoBehaviour
     public Text ScoreText;
     public Text BestScoreText;
     public GameObject GameOverText;
-    
+
+    Player player = null;
+
     private bool m_Started = false;
     private int m_Points;
     
@@ -38,10 +40,14 @@ public class MainManager : MonoBehaviour
             }
         }
 
-        Player _instance = Player.Instance;
+        player = Player.Instance;
+        SetBestScoreText();
+    }
 
-        if(_instance)
-            BestScoreText.text = $"BestScore : {_instance.Name} : 0";
+    void SetBestScoreText()
+    {
+        if (player)
+            BestScoreText.text = $"BestScore : {player.Name} : {player.GetBestScore()}";
     }
 
     private void Update()
@@ -79,5 +85,14 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
 
+        if (player)
+        {
+            if (m_Points > player.GetBestScore())
+            {
+                player.SetBestScore(m_Points);
+                player.SaveData();
+                SetBestScoreText();
+            }
+        }
     }
 }

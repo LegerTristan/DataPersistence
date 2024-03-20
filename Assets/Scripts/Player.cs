@@ -5,11 +5,20 @@ using UnityEngine;
 public class Player : SingletonTemplate<Player>
 {
 
-    public string Name { get; set; }
+    Data playerData = new Data();
 
-    void Start()
+    public string Name { get; set; } = "David Goodenough";
+
+    void OnEnable()
     {
+        playerData.Load();
         DontDestroyOnLoad(gameObject);   
     }
+
+    public int GetBestScore() => playerData.BestScore;
+
+    public void SetBestScore(int _bestScore) => playerData.BestScore = _bestScore;
+
+    public void SaveData() => playerData.Save();
 
 }
